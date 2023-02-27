@@ -16,13 +16,13 @@ export class Authservice {
   
   signup (email: string, password: string) {
     return this.http.post(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCR7rSzDjIl1-tTB1ssIIjdmzS8g0YYqnU'),
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCR7rSzDjIl1-tTB1ssIIjdmzS8g0YYqnU'
         {
             email: email,
             password: password,
             returnSecureToken: true  
         }
-    
+    );
   }  
 }
 
