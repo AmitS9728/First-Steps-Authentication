@@ -22,8 +22,18 @@ export class AuthComponent {
     }
     const email = form.value.email;
     const password = form.value.password;
+
+    if (this.isLoginMode) {
+      
+    }
+
+    this.authService.signup(email, password).subscribe(
+      resData => { 
+        console.log(resData);
+      }
+    );
+
     form.reset();
   }
 }
-
 
