@@ -34,7 +34,7 @@ export class AuthComponent {
           console.log(resData);
           this.isLoading = false;
         },
-        error => {
+        errorRes => {
           console.log(errorRes);
           switch (errorRes.error.error.message) {
             case 'EMAIL_EXISTS':
