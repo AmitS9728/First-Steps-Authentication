@@ -26,17 +26,15 @@ export class AuthComponent {
     if (this.isLoginMode) {
       //.. 
     } else {
-
+      this.authService.signup(email, password).subscribe(
+        resData => { 
+          console.log(resData);
+        },
+        error => {
+          console.log(error);
+        }
+      );
     }
-
-    this.authService.signup(email, password).subscribe(
-      resData => { 
-        console.log(resData);
-      },
-      error => {
-        console.log(error);
-      }
-    );
 
     form.reset();
   }
