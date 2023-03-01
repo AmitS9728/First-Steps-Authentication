@@ -9,7 +9,8 @@ interface AuthResponseData {
   email: string;
   refreshToken: string;
   expiresIn: string;
-  localId: string;  
+  localId: string;
+  registered?: boolean;  
 }
 
 @Injectable({providedIn: 'root'})
@@ -36,6 +37,18 @@ export class AuthService {
       }
       return throwError(errorMessage);
     }));
-  }  
+  }
+  
+  login(email: string, password: string) {
+    this.http.post(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCR7rSzDjIl1-tTB1ssIIjdmzS8g0YYqnU',
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }
+    )
+  }
 }
+
 
