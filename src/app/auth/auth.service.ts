@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 
-interface AuthResponseData {
+export interface AuthResponseData {
   kind: string;
   idToken: string;
   email: string;
@@ -40,7 +40,7 @@ export class AuthService {
   }
   
   login(email: string, password: string) {
-    this.http.post(
+    return this.http.post<AuthResponseData>(
       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCR7rSzDjIl1-tTB1ssIIjdmzS8g0YYqnU',
       {
         email: email,
