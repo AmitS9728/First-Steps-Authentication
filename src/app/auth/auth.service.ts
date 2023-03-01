@@ -47,7 +47,7 @@ export class AuthService {
         password: password,
         returnSecureToken: true
       }
-    )
+    );
   }
 }
 
