@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap } from "rxjs/operators";
-import { throwError, Subject } from "rxjs";
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
 
 import { User } from './user.model';
 
@@ -12,100 +12,88 @@ export interface AuthResponseData {
   refreshToken: string;
   expiresIn: string;
   localId: string;
-  registered?: boolean;  
+  registered?: boolean;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new Subject<User>();
 
   constructor(private http: HttpClient) {}
-  
-  signup (email: string, password: string) {
-     return this.http
-       .post<AuthResponseData>(
-         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCR7rSzDjIl1-tTB1ssIIjdmzS8g0YYqnU',
-         {
-            email: email,
-            password: password,
-            returnSecureToken: true  
-         }
-       )  
-       .pipe(
-         catchError(this.handleError),
-         tap(resData => {
-           this.handleAuthentication(
-             resData.email, 
-             resData.localId, 
-             resData.expiresIn,
-             +resData.expiresIn
-            );
-         })
-       );
-  }
 
-  login(email: string, password: string) {
-    return this.http.
+  signup(email: string, password: string) {
+    return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCR7rSzDjIl1-tTB1ssIIjdmzS8g0YYqnU',
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDb0xTaRAoxyCgvaDF3kk5VYOsTwB_3o7Y',
         {
           email: email,
           password: password,
           returnSecureToken: true
         }
       )
-    .pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        this.handleAuthentication(
-          resData.email, 
-          resData.localId, 
-          resData.idToken,
-          +resData.expiresIn
-        );
-      })
-     ); 
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
+  }
+
+  login(email: string, password: string) {
+    return this.http
+      .post<AuthResponseData>(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDb0xTaRAoxyCgvaDF3kk5VYOsTwB_3o7Y',
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
   }
 
   private handleAuthentication(
     email: string,
     userId: string,
-    token: string, 
+    token: string,
     expiresIn: number
   ) {
-    const expirationDate = new Date(
-      new Date().getTime() + expiresIn * 1000
-    );
-  const user = new User(
-    email,
-    userId, 
-    token, 
-    expirationDate
-  );
-  this.user.next(user);
-
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, userId, token, expirationDate);
+    this.user.next(user);
   }
 
   private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage = 'An unknow error occured!';
+    let errorMessage = 'An unknown error occurred!';
     if (!errorRes.error || !errorRes.error.error) {
       return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
       case 'EMAIL_EXISTS':
-        errorMessage = 'This Email exists Already!';
+        errorMessage = 'This email exists already';
         break;
       case 'EMAIL_NOT_FOUND':
-        errorMessage = 'This Email does not Exist!';
+        errorMessage = 'This email does not exist.';
         break;
       case 'INVALID_PASSWORD':
-        errorMessage = 'This Password is not Correct!';
+        errorMessage = 'This password is not correct.';
         break;
     }
-
     return throwError(errorMessage);
   }
 }
-
-
-
