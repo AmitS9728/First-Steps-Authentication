@@ -6,6 +6,7 @@ import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 
 export interface AuthResponseData {
+  kind: string;
   idToken: string;
   email: string;
   refreshToken: string;
@@ -64,6 +65,11 @@ export class AuthService {
           );
         })
       );
+  }
+
+  logout() {
+    this.user.next(null);
+    // this.router.navigate(['/auth']);
   }
 
   private handleAuthentication(
