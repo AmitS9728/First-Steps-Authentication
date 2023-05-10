@@ -13,9 +13,9 @@ export class AppComponent implements OnInit{
     this.authService.autologin();  
   }
 
-  // loadedFeature = 'recipe';
+  loadedFeature = 'recipe';
 
-  // onNavigate(feature: string) {
-  //   this.loadedFeature = feature;
-  // }
+  onNavigate(feature: string) {
+    this.loadedFeature = feature;
+  }
 }
