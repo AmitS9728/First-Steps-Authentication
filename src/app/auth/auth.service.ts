@@ -79,7 +79,16 @@ export class AuthService {
       return; 
     }
 
-    const loadedUser = new User ();
+    const loadedUser = new User(
+      userData.email,
+      userData.id,
+      userData._token,
+      new Date(userData._tokenExpirationDate)
+    );
+
+    if(loadedUser.token) {
+      this.user.next(loadedUser);
+    }
   }
 
   logout() {
