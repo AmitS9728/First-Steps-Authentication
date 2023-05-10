@@ -68,6 +68,20 @@ export class AuthService {
       );
   }
 
+  autologin() {
+    const userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;      
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return; 
+    }
+
+    const loadedUser = new User ();
+  }
+
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
