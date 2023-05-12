@@ -7,10 +7,12 @@ import {
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-@Injectable({ provideIn: 'root' })
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     router: RouterStateSnapshot
-  ): 
+  ): boolean | Promise<boolean> | Observable<boolean> {
+
+  }
 }
